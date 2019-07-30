@@ -1,0 +1,24 @@
+{
+    "topics":[
+        {
+            "Restaurant":["café","jus","resto","chicken","pizza","sandwich","frite","glace","table","couvert","eau","burger","food","boisson","plat","repas","restau","dessert"]
+        },
+        {
+            "Hôtel":["room","chambre","nuit","hôtel","reception","étage","repas","appartement","residence","jour"]
+        },
+        {
+            "Train":["train","station","arrivé","métro","classe","depart","gare","banlieue","cabine","arrêt"]
+        },
+        {
+            "Avion":["aéroport","départ","arrivé","classe","direct","escale","repas","air","vol","passeport","avion"]
+        },
+        {
+            "Parking":["voiture","matricule","parking","véhicule","parc","place"]
+        },
+        {
+            "Péage":["péage","véhicule","autoroute"]
+        }
+    ],
+    "names":["Restaurant","Hôtel","Train","Avion","Parking","Péage"]
+
+}
