@@ -1,6 +1,7 @@
 const fs = require('fs')
 
 var data;
+var nameclass;
 var score=[0,0,0,0,0,0]
 module.exports = function classifier (data){
     fs.readFile('./classInvoices.json', 'utf8', (err, jsonString) => {
@@ -20,7 +21,8 @@ module.exports = function classifier (data){
         }
     }
     console.log(classInv.names[score.indexOf(Math.max(...score))]);
-    return classInv.names[score.indexOf(Math.max(...score))]
+    nameclass=classInv.names[score.indexOf(Math.max(...score))]
     });
+    return nameclass
 }
 

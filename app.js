@@ -5,6 +5,8 @@ const restify = require('restify');
 const dialogflow = require('dialogflow');
 const uuid = require('uuid');
 var Jimp = require("jimp")
+var storageupload=require ('./gcsupload');
+var InvoiceScan=require ('./regex')
         
         /**
          * Send a query to the dialogflow agent, and return the query result.
@@ -28,13 +30,19 @@ server.listen(process.env.port || process.env.PORT || 3978, () => {
 server.post('/api/messages', connector.listen());
 
 
-
-var bot = new builder.UniversalBot(connector, function (session) {
+var bot = new builder.UniversalBot(connector, async function (session) {
     var msg = session.message;
+    var reply;
     if (msg.attachments && msg.attachments.length > 0) {
      // Echo back attachment
      var attachment = msg.attachments[0];
-     sizeimg(attachment.contentUrl,"output.jpg");
+     session.send("Traitement en cours....")
+     const imageUrl=await storageupload(attachment.contentUrl,attachment.name);
+     //console.log(imageUrl)
+     
+       reply= InvoiceScan(imageUrl)
+ 
+     session.send(reply);
     } 
     else {
         async function runSample(projectId = 'helloagent-ijihmo') {
@@ -76,10 +84,5 @@ var bot = new builder.UniversalBot(connector, function (session) {
 });
 
 
-function sizeimg(inputFile, outputFile) {
-    Jimp.read(inputFile, function(err,img){
-        if (err) throw err;
-        img.resize(842,595).write(outputFile);
-        });
-}
+ 
 

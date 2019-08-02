@@ -1,10 +1,15 @@
-async function quickstart() {
+
+const axios = require('axios')
+const {Storage} = require('@google-cloud/storage');
+
+
+ module.exports = async function quickstart(Urlimagebase) {  
     // Imports the Google Cloud client library
     const vision = require('@google-cloud/vision');
   
     // Creates a client
     const client = new vision.ImageAnnotatorClient({
-        keyFilename:"HelloAgent-ed43f8d08320.json"
+        keyFilename:"spring19Eline-f87f0f815802.json"
     });
   
     body={
@@ -15,10 +20,7 @@ async function quickstart() {
                 "maxResults": 50,
                 "type": "LANDMARK_DETECTION"
               },
-              {
-                "maxResults": 50,
-                "type": "FACE_DETECTION"
-              },
+              
               {
                 "maxResults": 50,
                 "type": "OBJECT_LOCALIZATION"
@@ -53,10 +55,10 @@ async function quickstart() {
               }
             ],
             "image":{
-                "source":{
-                  "imageUri":
-                    "gs://bucket_name/path_to_image_object"
-                }
+              "content":Urlimagebase
+              /*"source":{
+                "imageUri":"gs://eline_bucket/modele-facture-fr-pur-750px with resize.png"*/
+                  
               },
             "imageContext": {
               "cropHintsParams": {
@@ -70,8 +72,17 @@ async function quickstart() {
           }
         ]
       }
-      axios.post('https://vision.googleapis.com/v1/images:annotate?key=YOUR_API_KEY_HERE', body)
-  .then((response) => console.log(response));
+    return axios.post('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCBKeaJ1k7cKNlPmYrqwgOo7AqIQRmSQIk', body)
+     .catch()
+    //console.log(data);
 
   }
-  quickstart()
+/*async function run(){
+  var Urlimg="";
+  const response= await quickstart(Urlimg);
+    var data=response.data.responses[0];
+    console.log(data);}
+
+    run()*/
+  
+
