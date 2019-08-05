@@ -1,11 +1,12 @@
 const fs = require('fs')
 var chrono = require('chrono-node');
-var confidence;
-var data;
-var regex = /[+-]?\d+(\.\d\d)/g;
 var classifier=require('./classifier')
 var vision=require ('./vision')
+var _=require("underscore")
 var price;
+var confidence;
+var regex = /[+-]?\d+(\.\d\d)/g;
+var data;
 
 module.exports = async function Searchtotal(Urlimg){
     //console.log(Urlimg)
@@ -14,22 +15,24 @@ module.exports = async function Searchtotal(Urlimg){
     console.log(data)
     var text=data.fullTextAnnotation.text;
     text = text.replace(/,/g, ".");
-    if (text.toUpperCase().indexOf("NET À PAYER")!=-1){
-        console.log("NET À PAYER FOUNDED");
-        price=DetectTotal(data,"PAYER");} 
-    else if (text.toUpperCase().indexOf("NAP")!=-1) {
-        console.log("NAP FOUNDED");
-        price=DetectTotal(data,"NAP");}
-    else if (text.toUpperCase().indexOf("TOTAL")!=-1){
-        console.log("TOTAL FOUNDED");
-        price=DetectTotal(data,"TOTAL");}
-    else if (text.toUpperCase().indexOf("TOT")!=-1){
-        console.log("TOT FOUNDED");
-        price=DetectTotal(data,"TOT");}
-    else {price=DetectMax(data);}
-        
+    var obj = fs.readFileSync('./Wordspriority.json', 'utf8');
+    Words=JSON.parse(obj)
+    while(!(_.isEmpty(Words.priority))){
+        max_key = _.invert(Words.priority)[_.max(Words.priority)];
+        if (text.toUpperCase().indexOf(max_key)!=-1){
+            console.log(max_key+" FOUNDED");
+            price=DetectTotal(data,max_key);
+            break;
+        }
+        else {
+            delete Words.priority[max_key]
+        }
+    }
+    if (_.isEmpty(Words.priority)){
+        price=DetectMax(data);
+    }
     console.log(confidence);
-    var texte=data.fullTextAnnotation.text.replace(/\n/g, " ");
+    var texte=data.fullTextAnnotation.text.replace(/\n/g, " Date ");
     var results = chrono.parse(texte);
     console.log('date =',results[0].text); 
     var typefact=classifier(data)
@@ -60,7 +63,7 @@ function DetectTotal(file,word){
     console.log("assembledstring=",assembledstrings)
     assembledstrings=assembledstrings.replace(/,/g,".")
     floatsA = assembledstrings.match(regex);
-    if (floatsA==null){return null}// if there is no total with word searched
+    if ((floatsA==null ) || (assembledstrings=="")){return DetectMax(data)}// if there is no total with word searched
     else {
     floatsA.map(function(v) { return parseFloat(v); });
     console.log(floatsA);

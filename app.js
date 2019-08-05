@@ -37,21 +37,19 @@ var bot = new builder.UniversalBot(connector, async function (session) {
      // Echo back attachment
      var attachment = msg.attachments[0];
      session.send("Traitement en cours....")
-     const imageUrl=await storageupload(attachment.contentUrl,attachment.name);
+     const imageUrl=await storageupload(attachment.contentUrl,attachment.name).catch((err)=> console.log(err.message));
      //console.log(imageUrl)
-     
-       reply= InvoiceScan(imageUrl)
- 
+     reply= await InvoiceScan(imageUrl).catch((err)=> session.send("Veuillez fournir une image valide"))
      session.send(reply);
     } 
     else {
-        async function runSample(projectId = 'helloagent-ijihmo') {
+        async function runSample(projectId = 'elineagent-xxymjs') {
           // A unique identifier for the given session
           const sessionId = uuid.v4();
-        
+          
           // Create a new session
           const sessionClient = new dialogflow.SessionsClient({
-              keyFilename:"HelloAgent-ed43f8d08320.json"
+              keyFilename:"ElineAgent-05ea25bb920f.json"
           });
           const sessionPath = sessionClient.sessionPath(projectId, sessionId);
         

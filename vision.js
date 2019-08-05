@@ -9,7 +9,7 @@ const {Storage} = require('@google-cloud/storage');
   
     // Creates a client
     const client = new vision.ImageAnnotatorClient({
-        keyFilename:"spring19Eline-f87f0f815802.json"
+        keyFilename:"spring19Eline-cc0bfa3b53c0.json"
     });
   
     body={
@@ -72,7 +72,7 @@ const {Storage} = require('@google-cloud/storage');
           }
         ]
       }
-    return axios.post('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCBKeaJ1k7cKNlPmYrqwgOo7AqIQRmSQIk', body)
+    return axios.post('https://vision.googleapis.com/v1/images:annotate?key=', body)
      .catch()
     //console.log(data);
 
