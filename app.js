@@ -7,12 +7,10 @@ const uuid = require('uuid');
 var Jimp = require("jimp")
 var storageupload=require ('./gcsupload');
 var InvoiceScan=require ('./regex')
-        
         /**
          * Send a query to the dialogflow agent, and return the query result.
          * @param {string} projectId The project to be used
          */
-
 
 // Create chat connector for communicating with the Bot Framework Service
 const connector = new builder.ChatConnector({
@@ -46,7 +44,7 @@ var bot = new builder.UniversalBot(connector, async function (session) {
         async function runSample(projectId = 'elineagent-xxymjs') {
           // A unique identifier for the given session
           const sessionId = uuid.v4();
-          
+
           // Create a new session
           const sessionClient = new dialogflow.SessionsClient({
               keyFilename:"ElineAgent-05ea25bb920f.json"

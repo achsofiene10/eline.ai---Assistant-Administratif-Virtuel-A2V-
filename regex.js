@@ -74,17 +74,19 @@ function DetectTotal(file,word){
     
 }}
 
-function DetectMax(file){
-    var ch=file.fullTextAnnotation.text;
+
+function DetectMax(file1){
+    var ch=file1.fullTextAnnotation.text;
     ch=ch.replace(/,/g,".")
     //console.log(ch)
-    floatsB = ch.match(regex).map(function(v) { return parseFloat(v); });
+    var floatsB=ch.match(regex);
     if (floatsB==null){return null}else{
+    floatsB = floatsB.map(function(v) { return parseFloat(v); });
     confidence=0.6;
     console.log(floatsB);
     console.log(Math.max(...floatsB));
     return (Math.max(...floatsB))}
-}
+  }
 
 
 
