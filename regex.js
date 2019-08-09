@@ -40,23 +40,28 @@ module.exports = async function Searchtotal(Urlimg){
 }
 function DetectTotal(file,word){
     var location=[]
+    var xword;
     for (var key=0;key<file.textAnnotations.length;key++) { // find all Y of words=total
         if ((file.textAnnotations[key].description).toUpperCase()==word) {
             //console.log(file.textAnnotations[key].boundingPoly.vertices[3].y)
-            var starty2,starty1;
+            var starty2;
+            xword=file.textAnnotations[key].boundingPoly.vertices[0].x;
+            var marge=file.textAnnotations[key].boundingPoly.vertices[3].y-file.textAnnotations[key].boundingPoly.vertices[0].y
+            console.log(marge)
             if (file.textAnnotations[key].boundingPoly.vertices[3].y>file.textAnnotations[key].boundingPoly.vertices[2].y)
             { starty2=file.textAnnotations[key].boundingPoly.vertices[3].y;}
             else {starty2=file.textAnnotations[key].boundingPoly.vertices[2].y}
             /*if (data.textAnnotations[key].boundingPoly.vertices[0].y<data.textAnnotations[key].boundingPoly.vertices[1].y)
             { starty1=data.textAnnotations[key].boundingPoly.vertices[0].y;}
             else {starty1=data.textAnnotations[key].boundingPoly.vertices[1].y}*/
-            for (var i=starty2-10;i<starty2+10;i++){
+            for (var i=starty2-(marge/2);i<starty2+(marge/2);i=i+0.5){
             //console.log(i) // array of Y +-
             location.push(i)}}}
+            console.log(location)
     var assembledstrings="";
     for (var key=1;key<file.textAnnotations.length;key++) {
         for (var i=0;i<location.length;i++){
-        if (file.textAnnotations[key].boundingPoly.vertices[3].y==location[i]) {
+        if ((file.textAnnotations[key].boundingPoly.vertices[3].y==location[i]) &&(file.textAnnotations[key].boundingPoly.vertices[0].x>xword)) {
            // console.log(data.textAnnotations[key].description)
             assembledstrings=assembledstrings.concat(file.textAnnotations[key].description)
         }}}
