@@ -11,7 +11,7 @@ const storage = new Storage({
   projectId: 'spring19eline',
   keyFilename: 'spring19Eline-cc0bfa3b53c0.json'
 });
-let filename=await sizeimg(Urlfile,file).catch((err) => console.log('error resize',err.message));        //   resize picture
+let filename=await saveimg(Urlfile,file).catch((err) => console.log('error save',err.message));        //   save picture
 Bucketname="eline_bucket";
 console.log("upload start");
 
@@ -35,9 +35,9 @@ console.log("upload start");
   encoded= await encode(file).catch((err) => console.log('error encode base64',err.message));
   return encoded; //encode file from the storage or path images/
 }
- function sizeimg(inputFile,output) {
+ function saveimg(inputFile,output) {
   Jimp.read(inputFile, function(err,img){
-      img.resize(1024,768	).write("./images/"+output);
+      img.write("./images/"+output);
       });
       console.log("resize complete")
       return new Promise(resolve => {
