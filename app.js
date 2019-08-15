@@ -26,7 +26,14 @@ server.listen(process.env.port || process.env.PORT || 3978, () => {
 
 // Listen for messages from users
 server.post('/api/messages', connector.listen());
+const sessionId = uuid.v4();
+const projectId = 'elineagent-xxymjs'
 
+          // Create a new session
+const sessionClient = new dialogflow.SessionsClient({
+       keyFilename:"ElineAgent-05ea25bb920f.json"
+    });
+const sessionPath = sessionClient.sessionPath(projectId, sessionId);
 
 var bot = new builder.UniversalBot(connector, async function (session) {
     var msg = session.message;
@@ -41,15 +48,9 @@ var bot = new builder.UniversalBot(connector, async function (session) {
      session.send(reply);
     } 
     else {
-        async function runSample(projectId = 'elineagent-xxymjs') {
+        async function runSample() {
           // A unique identifier for the given session
-          const sessionId = uuid.v4();
-
-          // Create a new session
-          const sessionClient = new dialogflow.SessionsClient({
-              keyFilename:"ElineAgent-05ea25bb920f.json"
-          });
-          const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+          
         
           // The text query request.
           const request = {
@@ -67,6 +68,7 @@ var bot = new builder.UniversalBot(connector, async function (session) {
           // Send request and log result
           const responses = await sessionClient.detectIntent(request);
           const result = responses[0].queryResult;
+          console.log(responses[0])
           //console.log(`  Response: ${result.fulfillmentText}`);
           session.sendTyping() 
         // Echo back users text
